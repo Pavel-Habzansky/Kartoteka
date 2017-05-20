@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+
+<VBox alignment="center" minWidth="650.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Controller">
+   <children>
+   
+       <TableView fx:id="tableView" editable="true" minWidth="600.0" VBox.vgrow="ALWAYS">
+           <columnResizePolicy>
+               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+           </columnResizePolicy>
+           <columns>
+               <TableColumn fx:id="birthCertificateNumberColumn" editable="true" minWidth="65.0" prefWidth="70.0" text="Rodne cislo">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="birthCertificateNumber" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn fx:id="nameColumn" editable="true" minWidth="65.0" text="Jmeno">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="name" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn fx:id="surnameColumn" editable="true" minWidth="70.0" text="Prijmeni">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="surname" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn fx:id="birthdayColumn" editable="true" minWidth="70.0" text="Narozeni">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="birthday" />
+                   </cellValueFactory>
+               </TableColumn>
+            <TableColumn prefWidth="75.0" text="Vek">
+                <cellValueFactory>
+                    <PropertyValueFactory property="age"/>
+                </cellValueFactory>
+            </TableColumn>
+               <TableColumn fx:id="phoneNumberColumn" editable="true" minWidth="70.0" prefWidth="110.0" text="Tel. cislo">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="phoneNumber" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn fx:id="genderColumn" editable="true" prefWidth="80.0" text="Pohlavi">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="gender" />
+                   </cellValueFactory>
+               </TableColumn>
+           </columns>
+       </TableView>
+       <HBox prefHeight="200.0" prefWidth="460.0" VBox.vgrow="ALWAYS">
+          <children>
+              <VBox alignment="CENTER" minWidth="175.0" spacing="10.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <TextField fx:id="birthCertificateNumberField" maxWidth="150.0" promptText="Rodne cislo" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </TextField>
+                  <TextField fx:id="nameField" maxWidth="150.0" promptText="Jmeno" VBox.vgrow="ALWAYS" />
+                  <TextField fx:id="surnameField" maxWidth="150.0" promptText="Prijmeni" VBox.vgrow="ALWAYS" />
+               </children></VBox>
+              <VBox HBox.hgrow="ALWAYS">
+                 <children>
+                     <VBox alignment="CENTER" minWidth="175.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <DatePicker fx:id="bdDatePicker" maxWidth="150.0" promptText="Datum narozeni" />
+                        <ComboBox fx:id="genderBox" maxWidth="150.0" promptText="Pohlavi" />
+                        <TextField fx:id="phoneNumberField" maxWidth="150.0" promptText="Tel. cislo" />
+                     </children></VBox>
+                 </children>
+              </VBox>
+              <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Button fx:id="addButton" mnemonicParsing="false" onAction="#handleAddButtonOnAction" prefHeight="50.0" prefWidth="50.0" text="+" />
+                  <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#handleDeleteButtonOnAction" prefHeight="50.0" prefWidth="50.0" text="-" />
+               </children></VBox>
+          </children>
+       </HBox>
+   </children>
+</VBox>
