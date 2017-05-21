@@ -7,6 +7,8 @@ public final class Constants {
 
     public static String MAIN_LAYOUT = "/mainLayout.fxml";
 
+    public static String EDIT_WINDOW_LAYOUT = "/editWindowmainLayout.fxml";
+
     public static String DATABASE_RESOURCE = "test.json";
 
     private Constants(){}

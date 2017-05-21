@@ -12,11 +12,6 @@ import java.time.temporal.ChronoUnit;
  * Created by PavelHabzansky on 02.05.17.
  */
 public class Person {
-
-    private String name;
-    private String surname;
-    private String birthCertificateNumber;
-    private long phoneNumber;
     private LocalDate birthday;
     private Gender gender;
 
@@ -27,28 +22,19 @@ public class Person {
     private LongProperty phoneNumberProperty;
 
     public Person(String name, String surname, LocalDate birthday, long phoneNumber, String birthCertificateNumber, Gender gender){
-        this.name = name;
-        this.surname = surname;
-        this.phoneNumber = phoneNumber;
-        this.birthCertificateNumber = birthCertificateNumber;
-        this.gender = gender;
+        this.nameProperty = new SimpleStringProperty(name);
+        this.surnameProperty = new SimpleStringProperty(surname);
         this.birthday = birthday;
-        this.age = getAge();
-
-        createProperties();
-    }
-    private void createProperties(){
-        this.nameProperty = new SimpleStringProperty(this.name);
-        this.surnameProperty = new SimpleStringProperty(this.surname);
-        this.birthCertificateNumberProperty = new SimpleStringProperty(this.birthCertificateNumber);
         this.phoneNumberProperty = new SimpleLongProperty(phoneNumber);
+        this.birthCertificateNumberProperty = new SimpleStringProperty(birthCertificateNumber);
+        this.gender = gender;
+        getAge();
     }
 
     public int getAge(){
         this.age = (int)ChronoUnit.YEARS.between(birthday,LocalDate.now());
         return age;
     }
-
     public StringProperty getNameProperty(){
         return this.nameProperty;
     }
@@ -61,29 +47,45 @@ public class Person {
     public LongProperty getPhoneNumberProperty(){
         return this.phoneNumberProperty;
     }
-
     public String getName(){
-        return this.name;
+        return this.nameProperty.get();
     }
     public String getSurname(){
-        return this.surname;
+        return this.surnameProperty.get();
+    }
+    public long getPhoneNumber(){
+        return this.phoneNumberProperty.get();
     }
     public String getBirthCertificateNumber(){
-        return this.birthCertificateNumber;
+        return this.birthCertificateNumberProperty.get();
     }
     public Gender getGender(){
         return this.gender;
-    }
-    public long getPhoneNumber(){
-        return this.phoneNumber;
     }
     public LocalDate getBirthday(){
         return this.birthday;
     }
 
-//    @Override
-//    public String toString(){
-//
-//    }
+    public void setName(String name){
+        this.nameProperty.setValue(name);
+    }
+    public void setSurname(String surname){
+        this.surnameProperty.setValue(surname);
+    }
+    public void setBirthday(LocalDate birthday){
+        this.birthday = birthday;
+        getAge();
+    }
+    public void setPhoneNumber(long phoneNumber){
+        this.phoneNumberProperty.setValue(phoneNumber);
+    }
+    public void setBirthCertificateNumber(String certificateNumber){
+        this.birthCertificateNumberProperty.setValue(certificateNumber);
+    }
+    @Override
+    public String toString(){
+        return "Name: "+getName()+" Surname: "+getSurname()+" Age: "+getAge()+" Birthday: "+getBirthday()+" BirthCertificateNumber: "+getBirthCertificateNumber()+
+                " PhoneNumber: "+getPhoneNumber()+" Gender: "+getGender();
+    }
 
 }

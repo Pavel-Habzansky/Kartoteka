@@ -38,6 +38,16 @@ public class PersonDB {
         }
     }
 
+    public void print(){
+        for (int i = 0; i < database.size(); i++){
+            System.out.println(database.get(i));
+        }
+    }
+
+    public void remove(Person person){
+        this.database.remove(person);
+    }
+
     public long size(){
         return this.database.size();
     }
