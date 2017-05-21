@@ -1,16 +1,17 @@
 package controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Person;
 import model.PersonDB;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 
 /**
@@ -22,6 +23,9 @@ public class EditWindowController {
     private PersonDB personDB = PersonDB.getInstance();
 
     private Person editPerson;
+
+    @FXML
+    private TextArea textArea;
 
     @FXML
     private Label ageLabel;
@@ -64,6 +68,16 @@ public class EditWindowController {
             alert.setContentText("Ujistěte se, že jste vyplnili všechna pole");
             alert.showAndWait();
         }else {
+            if (!textArea.getText().trim().isEmpty()){
+                File personDescription = new File(nameEditField.getText()+surnameEditField.getText()+".txt");
+                try(BufferedWriter writer = new BufferedWriter(new FileWriter(personDescription))){
+                    personDescription.createNewFile();
+                    writer.write(textArea.getText());
+                }catch (IOException e){
+                    logger.error("Failed to save description");
+                    logger.error(e.getMessage());
+                }
+            }
             this.personDB.remove(editPerson);
             Person editedPerson;
             String editedName = nameEditField.getText();
