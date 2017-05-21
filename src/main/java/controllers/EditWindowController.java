@@ -1,11 +1,15 @@
 package controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import model.Person;
 import model.PersonDB;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 
@@ -13,6 +17,7 @@ import java.time.LocalDate;
  * Created by PavelHabzansky on 21.05.17.
  */
 public class EditWindowController {
+    private static Logger logger = LogManager.getLogger(EditWindowController.class.getName());
 
     private PersonDB personDB = PersonDB.getInstance();
 
@@ -39,6 +44,7 @@ public class EditWindowController {
     }
 
     public void setEditPerson(Person person){
+        logger.debug("Person for editing has been set");
         this.editPerson = person;
         this.nameEditField.setText(editPerson.getName());
         this.surnameEditField.setText(editPerson.getSurname());
@@ -49,19 +55,33 @@ public class EditWindowController {
     }
 
     public void handleDoneButton(){
-        this.personDB.remove(editPerson);
-        Person editedPerson;
-        String editedName = nameEditField.getText();
-        String editedSurname = surnameEditField.getText();
-        String editedBirthCertificateNumber = birthCertificateNumberEditField.getText();
-        long editedPhoneNumber = Long.parseLong(phoneNumberEditField.getText());
-        LocalDate editedBD = bdEditDatePicker.getValue();
-//        this.editPerson.setName(nameEditField.getText());
-//        this.editPerson.setSurname(surnameEditField.getText());
-//        this.editPerson.setPhoneNumber(Long.parseLong(phoneNumberEditField.getText()));
-//        this.editPerson.setBirthCertificateNumber(birthCertificateNumberEditField.getText());
-//        this.editPerson.setBirthday(bdEditDatePicker.getValue());
-        editedPerson = new Person(editedName,editedSurname,editedBD,editedPhoneNumber,editedBirthCertificateNumber,editPerson.getGender());
-        this.personDB.add(editedPerson);
+        logger.debug("Button 'Hotov' has been pressed");
+        if (nameEditField.getText().isEmpty() || surnameEditField.getText().isEmpty() || birthCertificateNumberEditField.getText().isEmpty() ||
+                bdEditDatePicker.getValue() == null || phoneNumberEditField.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Špatné parametry");
+            alert.setHeaderText("Vynechaný parametr");
+            alert.setContentText("Ujistěte se, že jste vyplnili všechna pole");
+            alert.showAndWait();
+        }else {
+            this.personDB.remove(editPerson);
+            Person editedPerson;
+            String editedName = nameEditField.getText();
+            String editedSurname = surnameEditField.getText();
+            String editedBirthCertificateNumber = birthCertificateNumberEditField.getText();
+            long editedPhoneNumber = Long.parseLong(phoneNumberEditField.getText());
+            LocalDate editedBD = bdEditDatePicker.getValue();
+            editedPerson = new Person(editedName,editedSurname,editedBD,editedPhoneNumber,editedBirthCertificateNumber,editPerson.getGender());
+            this.personDB.add(editedPerson);
+            logger.debug(this.editPerson+" has been replaced by "+editedPerson);
+            Stage thisWindow = (Stage)this.ageLabel.getScene().getWindow();
+            thisWindow.close();
+        }
+
+    }
+
+    public void handleCloseButton(){
+        Stage thisWindow = (Stage)this.ageLabel.getScene().getWindow();
+        thisWindow.close();
     }
 }

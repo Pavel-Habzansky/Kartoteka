@@ -32,7 +32,7 @@ public class JsonManager {
             String data = this.gson.toJson(list, new TypeToken<ArrayList<Person>>(){}.getType());
             writer.write(data);
         }catch (IOException e){
-            System.err.println(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -41,8 +41,7 @@ public class JsonManager {
         try(BufferedReader reader = new BufferedReader(new FileReader(source))){
             result = gson.fromJson(reader, new TypeToken<ArrayList<Person>>(){}.getType());
         }catch (IOException e){
-            //TODO handle exception properly
-            System.err.println(e.getMessage());
+            logger.error(e.getMessage());
         }
         return result;
     }

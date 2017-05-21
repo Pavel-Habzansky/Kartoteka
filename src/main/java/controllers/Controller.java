@@ -1,8 +1,5 @@
 package controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.sun.tools.javac.jvm.Gen;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,40 +7,25 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import kartoteka.Constants;
 import model.Gender;
-import model.JsonManager;
 import model.Person;
 import model.PersonDB;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.util.Date;
 
 public class Controller {
     private static Logger logger = LogManager.getLogger(Controller.class.getName());
 
     private ObservableList<Person> personObservableList;
 
-    private JsonManager jsonManager = JsonManager.getInstance();
-
     private PersonDB personDB = PersonDB.getInstance();
 
     @FXML
     private TableView<Person> tableView;
-    @FXML
-    private TableColumn<Person, String> nameColumn;
-    @FXML
-    private TableColumn<Person, String> surnameColumn;
-    @FXML
-    private TableColumn<Person, String> birthCertificateNumberColumn;
-    @FXML
-    private TableColumn<Person, String> genderColumn;
-    @FXML
-    private TableColumn<Person, Date> birthdayColumn;
 
     @FXML
     private TextField birthCertificateNumberField;
@@ -61,27 +43,25 @@ public class Controller {
     @FXML
     public void initialize(){
         initObervableList();
-//        this.tableView.setItems(personObservableList);
         this.tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         this.genderBox.getItems().setAll(Gender.MALE.toString(), Gender.FEMALE.toString());
         tableView.setRowFactory( tv -> {
             TableRow<Person> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2){
-                    //TODO implement edit window
                     try{
                         FXMLLoader loader = new FXMLLoader(getClass().getResource(Constants.EDIT_WINDOW_LAYOUT));
                         Parent root = loader.load();
                         EditWindowController editWindowController = loader.getController();
                         editWindowController.setEditPerson(this.tableView.getSelectionModel().getSelectedItem());
                         Stage stage = new Stage();
-                        stage.setMinHeight(400);
-                        stage.setMinWidth(500);
-                        stage.setScene(new Scene(root, 500,400));
+                        stage.setMinHeight(Constants.EDIT_WINDOW_MIN_HEIGHT);
+                        stage.setMinWidth(Constants.EDIT_WINDOW_MIN_WIDTH);
+                        stage.setScene(new Scene(root, Constants.EDIT_WINDOW_MIN_WIDTH,Constants.EDIT_WINDOW_MIN_HEIGHT));
                         stage.showAndWait();
                         initObervableList();
                     }catch (IOException e){
-                        //TODO handle exception
+                        logger.error(e.getMessage());
                     }
 
 
@@ -89,7 +69,6 @@ public class Controller {
             });
             return row;
         });
-
         logger.debug("Main window Controller initialized");
     }
 
@@ -101,16 +80,20 @@ public class Controller {
             this.personObservableList = FXCollections.observableArrayList();
             this.tableView.setItems(personObservableList);
         }
-
+        logger.debug("ObservableList has been initialized, TableView is filled");
     }
 
     @FXML
     public void handleAddButtonOnAction(){
+        logger.debug("Add button pressed");
         if (nameField.getText().isEmpty() || surnameField.getText().isEmpty() || phoneNumberField.getText().isEmpty() ||
                 genderBox.getSelectionModel().getSelectedItem().isEmpty() || birthCertificateNumberField.getText().isEmpty() ||
                 bdDatePicker.getValue() == null){
-            //TODO notify user with dialog window about empty TextFields
-
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Špatné parametry");
+            alert.setHeaderText("Vynechaný parametr");
+            alert.setContentText("Před přidáním se ujistěte, že jste vyplnili všechna pole");
+            alert.showAndWait();
         }else {
             Person newPerson = new Person(nameField.getText(), surnameField.getText(), bdDatePicker.getValue(), Long.parseLong(phoneNumberField.getText()),
                     birthCertificateNumberField.getText(), Gender.getGender(genderBox.getSelectionModel().getSelectedItem()));
@@ -118,6 +101,7 @@ public class Controller {
             personDB.add(newPerson);
             personDB.deployDatabase();
         }
+        logger.debug("New person has been added to the database");
     }
 
     @FXML

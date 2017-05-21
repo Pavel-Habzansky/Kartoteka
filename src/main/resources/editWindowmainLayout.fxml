@@ -50,7 +50,7 @@
             <HBox maxHeight="40.0" nodeOrientation="LEFT_TO_RIGHT" spacing="10.0" VBox.vgrow="ALWAYS">
                <children>
                   <Button mnemonicParsing="false" text="Hotovo" HBox.hgrow="ALWAYS" onAction="#handleDoneButton"/>
-                  <Button mnemonicParsing="false" text="Zavrit" HBox.hgrow="ALWAYS" />
+                  <Button mnemonicParsing="false" text="Zavrit" HBox.hgrow="ALWAYS" onAction="#handleCloseButton"/>
                </children>
                <padding>
                   <Insets bottom="5.0" left="10.0" />
