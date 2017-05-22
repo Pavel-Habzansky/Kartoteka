@@ -63,8 +63,6 @@ public class Controller {
                     }catch (IOException e){
                         logger.error(e.getMessage());
                     }
-
-
                 }
             });
             return row;
@@ -95,13 +93,17 @@ public class Controller {
             alert.setContentText("Před přidáním se ujistěte, že jste vyplnili všechna pole");
             alert.showAndWait();
         }else {
-            Person newPerson = new Person(nameField.getText(), surnameField.getText(), bdDatePicker.getValue(), Long.parseLong(phoneNumberField.getText()),
-                    birthCertificateNumberField.getText(), Gender.getGender(genderBox.getSelectionModel().getSelectedItem()));
-            personObservableList.add(newPerson);
-            personDB.add(newPerson);
-            personDB.deployDatabase();
+            if (PersonDB.isBirthCertificateNumberCorrect(this.birthCertificateNumberField.getText())){
+                Person newPerson = new Person(nameField.getText(), surnameField.getText(), bdDatePicker.getValue(), Long.parseLong(phoneNumberField.getText()),
+                        birthCertificateNumberField.getText(), Gender.getGender(genderBox.getSelectionModel().getSelectedItem()));
+                personObservableList.add(newPerson);
+                personDB.add(newPerson);
+                personDB.deployDatabase();
+                logger.debug("New person has been added to the database");
+            }else {
+                logger.debug("Wrong birth certificate number input");
+            }
         }
-        logger.debug("New person has been added to the database");
     }
 
     @FXML
