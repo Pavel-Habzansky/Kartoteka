@@ -4,6 +4,8 @@ import kartoteka.Main;
 
 /**
  * Created by PavelHabzansky on 19.05.17.
+ *
+ * Part of model layer, enum defines Gender of an entry.
  */
 public enum Gender {
     MALE, FEMALE;

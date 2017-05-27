@@ -2,6 +2,9 @@ package kartoteka;
 
 /**
  * Created by PavelHabzansky on 16.03.17.
+ *
+ * Static class containing some constants to be used for specific things
+ * that shouldn't be changed.
  */
 public final class Constants {
 
@@ -15,7 +18,7 @@ public final class Constants {
 
     public static int MAIN_WINDOW_MIN_HEIGHT = 450;
 
-    public static int EDIT_WINDOW_MIN_WIDTH =400;
+    public static int EDIT_WINDOW_MIN_WIDTH = 400;
     public static int EDIT_WINDOW_MIN_HEIGHT = 500;
 
     private Constants(){}
